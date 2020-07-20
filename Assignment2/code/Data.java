@@ -6,10 +6,10 @@ public class Data{
     this.departureTime=0;
   }
   public void setArrivalTime(double a){
-    a= this.arrivalTime;
+     this.arrivalTime=a;
   }
   public void setDepartureTime(double d){
-    d=this.departureTime;
+    this.departureTime=d;
   }
   public double getDepartureTime(){
     return this.departureTime;
