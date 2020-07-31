@@ -50,7 +50,20 @@ public class QueueSimulator{
         e = Event.DEPARTURE;
     }
 
+    while(currTime < totalSimTime){
 
+      switch(e) {
+        case ARRIVAL:
+// the simulator will enqueue a node into the buffer queue (which mimics the router queue) and compute timeForNextArrival
+
+          break;
+        case DEPARTURE:
+        //  first node in the buffer queue is dequeued and this node is enqueued into eventQueue. The simulator then computes timeForNextDeparture.
+          eventQueue.enqueue(buffer.dequeue());
+          timeForNextDeparture = null;
+          break;
+      }
+    }
 
     return calcAverageWaitingTime();
   }
