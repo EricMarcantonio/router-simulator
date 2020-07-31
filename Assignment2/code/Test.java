@@ -29,6 +29,7 @@ public class Test{
     
     n=Q.size();
     
+    // why is this looping until i < n-1 (instead of i < n or i <= n-1)? It's leaving out the last data packet...
     for (i=0; i<n-1; i++) {
       d=Q.dequeue();
       System.out.println("Arrival Time: "+d.getArrivalTime()+", Departure Time: "+d.getDepartureTime());
