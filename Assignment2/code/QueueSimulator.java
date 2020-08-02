@@ -27,6 +27,8 @@ public class QueueSimulator{
   public QueueSimulator(double aR, double servT, double simT){
     arrivalRate = aR;
     serviceTime = servT;
+    // System.out.printf("servT time:%f \n", serviceTime);
+     
     totalSimTime = simT;
 
     timeForNextArrival = getRandTime(arrivalRate);
@@ -34,11 +36,16 @@ public class QueueSimulator{
   }
   
   public double calcAverageWaitingTime(){
-    double NumEvents = eventQueue.size(); 
+    double NumEvents = eventQueue.size();
+    // System.out.println(NumEvents); 
     double totalWaittime = 0;
     while (!eventQueue.isEmpty()){
       Data curr = eventQueue.dequeue();
-      totalWaittime += curr.departureTime - curr.arrivalTime;
+      totalWaittime += (curr.departureTime - curr.arrivalTime);
+      // System.out.printf("sojourn time:%f \n", (curr.departureTime - curr.arrivalTime));
+      // System.out.printf("arrival time:%f \n", (curr.arrivalTime));
+      // System.out.printf("depart time:%f \n", (curr.departureTime));
+     
     }
     return totalWaittime / NumEvents;
   }
@@ -49,15 +56,17 @@ public class QueueSimulator{
     while(currTime < totalSimTime){
       if(timeForNextArrival < timeForNextDeparture || buffer.isEmpty()){
         e = Event.ARRIVAL;
-        currTime = timeForNextArrival;
+        
     }else{
         e = Event.DEPARTURE;
-        currTime = timeForNextDeparture;
+        
     }
 
       switch(e) {
         case ARRIVAL:
 // the simulator will enqueue a node into the buffer queue (which mimics the router queue) and compute timeForNextArrival
+          currTime = timeForNextArrival;
+
           Data newData = new Data();
           newData.setArrivalTime(currTime);
           buffer.enqueue(newData);
@@ -67,10 +76,12 @@ public class QueueSimulator{
           break;
         case DEPARTURE:
         //  first node in the buffer queue is dequeued and this node is enqueued into eventQueue. The simulator then computes timeForNextDeparture.
+          currTime = timeForNextDeparture;
+        
           Data currData = buffer.dequeue();
           currData.setDepartureTime(currTime);
           eventQueue.enqueue(currData);
-
+          
           timeForNextDeparture += currTime + serviceTime;
           break;
       }
