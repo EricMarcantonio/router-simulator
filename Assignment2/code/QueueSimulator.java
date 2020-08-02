@@ -44,23 +44,34 @@ public class QueueSimulator{
   }
   
   public double runSimulation(){
-    if(timeForNextArrival < timeForNextDeparture || buffer.isEmpty()){
-        e = Event.ARRIVAL;
-    }else{
-        e = Event.DEPARTURE;
-    }
+
 
     while(currTime < totalSimTime){
+      if(timeForNextArrival < timeForNextDeparture || buffer.isEmpty()){
+        e = Event.ARRIVAL;
+        currTime = timeForNextArrival;
+    }else{
+        e = Event.DEPARTURE;
+        currTime = timeForNextDeparture;
+    }
 
       switch(e) {
         case ARRIVAL:
 // the simulator will enqueue a node into the buffer queue (which mimics the router queue) and compute timeForNextArrival
+          Data newData = new Data();
+          newData.setArrivalTime(currTime);
+          buffer.enqueue(newData);
 
+          
+          timeForNextArrival += getRandTime(arrivalRate);
           break;
         case DEPARTURE:
         //  first node in the buffer queue is dequeued and this node is enqueued into eventQueue. The simulator then computes timeForNextDeparture.
-          eventQueue.enqueue(buffer.dequeue());
-          timeForNextDeparture = null;
+          Data currData = buffer.dequeue();
+          currData.setDepartureTime(currTime);
+          eventQueue.enqueue(currData);
+
+          timeForNextDeparture += currTime + serviceTime;
           break;
       }
     }
